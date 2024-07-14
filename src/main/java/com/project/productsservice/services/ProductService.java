@@ -1,7 +1,6 @@
 package com.project.productsservice.services;
 
 
-import com.project.productsservice.elasticsearch.models.ESProduct;
 import com.project.productsservice.elasticsearch.repositories.ProductSearchRepository;
 import com.project.productsservice.models.Product;
 import com.project.productsservice.models.Variant;
@@ -16,9 +15,9 @@ import java.util.Optional;
 @Service
 public class ProductService {
 
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
-    private ProductSearchRepository productSearchRepository;
+    private final ProductSearchRepository productSearchRepository;
 
     public ProductService(ProductRepository productRepository, ProductSearchRepository productSearchRepository){
         this.productRepository=productRepository;
@@ -33,14 +32,7 @@ public class ProductService {
     }
 
     public Product createProduct(Product product) {
-        Product savedProduct= productRepository.save(product);
-        ESProduct esProduct = convertToESProduct(savedProduct);
-        productSearchRepository.save(esProduct);
-        return savedProduct;
-    }
-
-    public List<Product> searchProducts(String keyword) {
-        return productSearchRepository.findByNameContainingOrDescriptionContaining(keyword, keyword);
+        return productRepository.save(product);
     }
 
     public Product updateProduct(String id, Product updatedProduct) {
@@ -65,20 +57,5 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    private ESProduct convertToESProduct(Product product) {
-        ESProduct esProduct = new ESProduct();
-        esProduct.setId(product.getId());
-//        esProduct.setName(product.getName());
-//        esProduct.setDescription(product.getDescription());
-//        esProduct.setPrice(product.getPrice());
-//        esProduct.setCurrency(product.getCurrency());
-//        esProduct.setAvailability(product.isAvailability());
-//        esProduct.setQuantity(product.getQuantity());
-//        esProduct.setVariants(product.getVariants());
-//        esProduct.setCategories(product.getCategories());
-//        esProduct.setBrand(product.getBrand());
-//        esProduct.setReviews(product.getReviews());
-//        esProduct.setSellerInfo(product.getSellerInfo());
-        return esProduct;
-    }
+
 }

@@ -1,0 +1,79 @@
+{
+  "settings": {
+    "index.max_ngram_diff": 12,
+    "analysis": {
+      "filter": {
+        "ngram_filter": {
+          "type": "ngram",
+          "min_gram": 3,
+          "max_gram": 15
+        },
+        "lowercase": {
+          "type": "lowercase"
+        },
+        "stop_filter": {
+          "type": "stop",
+          "stopwords": "_english_"
+        },
+        "porter_stem": {
+          "type": "stemmer",
+          "name": "porter2"
+        },
+        "asciifolding": {
+          "type": "asciifolding"
+        }
+      },
+      "analyzer": {
+        "custom_analyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "stop_filter",
+            "porter_stem",
+            "asciifolding",
+            "ngram_filter"
+          ]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "name": {
+        "type": "text",
+        "analyzer": "custom_analyzer",
+        "search_analyzer": "standard",
+        "copy_to": "combined_fields"
+      },
+      "description": {
+        "type": "text",
+        "analyzer": "custom_analyzer",
+        "search_analyzer": "standard",
+        "copy_to": "combined_fields"
+      },
+      "brand": {
+        "type": "nested",
+        "properties": {
+          "name": {
+            "type": "text",
+            "analyzer": "custom_analyzer",
+            "search_analyzer": "standard",
+            "copy_to": "combined_fields"
+          },
+          "description": {
+            "type": "text",
+            "analyzer": "custom_analyzer",
+            "search_analyzer": "standard",
+            "copy_to": "combined_fields"
+          }
+        }
+      },
+      "combined_fields": {
+        "type": "text",
+        "analyzer": "custom_analyzer",
+        "search_analyzer": "standard"
+      }
+    }
+  }
+}

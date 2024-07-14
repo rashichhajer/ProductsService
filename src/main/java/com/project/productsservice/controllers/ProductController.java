@@ -1,5 +1,6 @@
 package com.project.productsservice.controllers;
 
+import com.project.productsservice.elasticsearch.models.ESProduct;
 import com.project.productsservice.models.Product;
 import com.project.productsservice.models.Variant;
 import com.project.productsservice.services.ProductService;
@@ -26,11 +27,6 @@ public class ProductController {
     @PostMapping("/variants/{productId}")
     public Product addVariant(@PathVariable String productId, @RequestBody Variant variant) {
         return productService.addVariant(productId, variant);
-    }
-
-    @GetMapping("/search")
-    public List<Product> searchProducts(@RequestParam String keyword) {
-        return productService.searchProducts(keyword);
     }
 
 }
